@@ -26,13 +26,13 @@ mpg %>%
             size = 5, hjust = -.2) +
   theme_void()
   
-  # 路线图
-  sample_n(mtcars, 10) %>%
-  ggplot(aes(mpg, disp)) +
-  geom_point(colour = "#69b3a2", na.rm = TRUE) +
-  geom_segment(aes(xend = c(tail(mpg, n=-1), NA),
-                   yend = c(tail(disp, n=-1), NA)),
-               arrow = arrow(length=unit(0.3,"cm")),
-               colour = "#69b3a2") +
-  geom_text(aes(label = disp), hjust = 1.2) +
-  theme_bw()
+# 路线图
+sample_n(mtcars, 10) %>%
+ggplot(aes(mpg, disp)) +
+geom_point(colour = "#69b3a2", na.rm = TRUE) +
+geom_segment(aes(xend = c(tail(mpg, n=-1), NA),
+                 yend = c(tail(disp, n=-1), NA)),
+             arrow = arrow(length=unit(0.3,"cm")),
+             colour = "#69b3a2") +
+geom_text(aes(label = disp), hjust = 1.2) +
+theme_bw()
