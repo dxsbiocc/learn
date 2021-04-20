@@ -97,7 +97,7 @@ p1 <- ggplot(df) +
         legend.position = "bottom",
         legend.background = element_rect(fill = 'white', colour = 'black')
         )
-
+# 样本的突变基因数目条形图
 p2 <- ggplot(df) +
   geom_bar(aes(x = sample, fill = MutFunc)) +
   # 使用 expand 删除数据与轴之间的空隙
@@ -113,7 +113,7 @@ p2 <- ggplot(df) +
     axis.ticks.length.y.left = unit(.25, "cm"),
     axis.line.y.left = element_line(colour = "black"),
   )
-
+# 突变基因的突变频数条形图
 p3 <- ggplot(df) +
   geom_bar(aes(y = gene, fill = MutFunc)) +
   scale_x_continuous(position = "top", breaks = seq(0, 280, 70),
