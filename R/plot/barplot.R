@@ -1,3 +1,5 @@
+library(tidyverse)
+
 # 带标签的并列柱状图
 mpg %>% 
   group_by(class, drv) %>% 
