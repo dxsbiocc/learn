@@ -1,3 +1,5 @@
+library(tidyverse)
+
 # 克利夫兰点图
 group_by(mpg, manufacturer) %>%
   summarise(displ = max(displ)) %>%
