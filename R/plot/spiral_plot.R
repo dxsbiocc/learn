@@ -1,5 +1,7 @@
 library(tidyverse)
 
+bit_data <- read_csv("~/Downloads/bit_data.csv")
+
 #################### 螺旋柱状图 ####################
 data <- group_by(bit_data, year, month) %>%
   summarise(value = mean(High)) %>%
@@ -54,6 +56,7 @@ df <- tibble(
 
 ggplot(df, aes(x = day, group = year)) +
   geom_ribbon(aes(ymin = ymin, ymax = ymax), fill = "orange") +
+  # geom_linerange(aes(ymin = ymin, ymax = ymax, colour = value)) # 渐变色
   geom_line(aes(y = ymin)) +
   geom_line(aes(y = ymax), colour = "grey40") +
   coord_polar(start = 1) +
