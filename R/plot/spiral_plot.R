@@ -44,8 +44,10 @@ df <- tibble(
   value = runif(length(date), min = 50, max = 300)
 ) %>%
   mutate(year = year(date), month = month(date), day = yday(date)) %>%
+  # 去除闰年多出的一天
   filter(day != 366) %>%
   mutate(
+    # 构造 y 轴梯度
     ymin = (year - 2015) * 364 + day, 
     ymax = ymin + value
   )
