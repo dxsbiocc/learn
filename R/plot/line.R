@@ -1,4 +1,5 @@
 # 坡度图
+library(tidyverse)
 library(ggrepel)
 
 mpg %>% 
