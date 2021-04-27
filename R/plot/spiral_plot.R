@@ -37,3 +37,32 @@ ggplot(data, aes(x, y, group = paste(year, month))) +
     axis.title = element_blank(),
     axis.text.y = element_blank()
   )
+
+#################### 螺旋面积图 ####################
+df <- tibble(
+  date = seq(as.Date("2015-01-01"), as.Date("2019-12-31"), "days"),
+  value = runif(length(date), min = 50, max = 300)
+) %>%
+  mutate(year = year(date), month = month(date), day = yday(date)) %>%
+  filter(day != 366) %>%
+  mutate(
+    ymin = (year - 2015) * 364 + day, 
+    ymax = ymin + value
+  )
+
+ggplot(df, aes(x = day, group = year)) +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax), fill = "orange") +
+  geom_line(aes(y = ymin)) +
+  geom_line(aes(y = ymax), colour = "grey40") +
+  coord_polar(start = 1) +
+  scale_x_continuous(
+    breaks = c(1,31,59,90,120,151,181,212,243,273,304,334),
+    labels = month.name
+  ) +
+  theme(
+    panel.background = element_blank(),
+    panel.grid.major.x = element_line(colour = "grey20", size = 0.25),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text.y = element_blank()
+  )
