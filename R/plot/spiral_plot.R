@@ -41,6 +41,7 @@ ggplot(data, aes(x, y, group = paste(year, month))) +
   )
 
 #################### 螺旋面积图 ####################
+library(lubridate)
 df <- tibble(
   date = seq(as.Date("2015-01-01"), as.Date("2019-12-31"), "days"),
   value = runif(length(date), min = 50, max = 300)
