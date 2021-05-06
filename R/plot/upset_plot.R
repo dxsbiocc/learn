@@ -4,6 +4,7 @@ library(UpSetR)
 movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"), 
                    header = T, sep = ";")
 
+# 自定义散点图
 my_scatter <- function(data, x, y) {
   p <- ggplot(data, aes_string(x, y, colour = "color")) +
     geom_point() +
@@ -13,7 +14,7 @@ my_scatter <- function(data, x, y) {
     )
   p
 }
-
+# 自定义密度图
 my_density <- function(data, x, y) {
   data$decades <- data[, y] %/% 10 * 10
   data <- data[which(data$decades >= 1970), ]
@@ -26,6 +27,7 @@ my_density <- function(data, x, y) {
   p
 }
 
+# 添加元数据，评分
 sets <- names(movies[3:19])
 avgRottenTomatoesScore <- round(runif(17, min = 0, max = 90))
 metadata <- as.data.frame(cbind(sets, avgRottenTomatoesScore))
@@ -33,10 +35,12 @@ names(metadata) <- c("sets", "avgRottenTomatoesScore")
 
 metadata$avgRottenTomatoesScore <- as.numeric(as.character(metadata$avgRottenTomatoesScore))
 
+# 城市信息
 Cities <- sample(c("Boston", "NYC", "LA"), 17, replace = T)
 metadata <- cbind(metadata, Cities)
 metadata$Cities <- as.character(metadata$Cities)
 
+# 接收状态
 accepted <- round(runif(17, min = 0, max = 1))
 metadata <- cbind(metadata, accepted)
 
