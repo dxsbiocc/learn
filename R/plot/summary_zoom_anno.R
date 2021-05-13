@@ -13,7 +13,7 @@ exp <- matrix(rnorm(50*10), nrow = 50)
 main <- Heatmap(
   exp, name = "main_matrix",
   col = col_fun
-  )
+)
 
 # 绘制一列离散型热图
 v <- sample(letters[1:2], 50, replace = TRUE)
@@ -27,7 +27,7 @@ lnc <- Heatmap(
     )
   ), 
   width = unit(1, "cm"),
-  )
+)
 
 # 绘制一列连续型热图
 v <- rnorm(50)
@@ -36,11 +36,11 @@ mi <- Heatmap(
   col = col_fun,
   top_annotation = HeatmapAnnotation(
     summary = anno_summary(
-      gp = gpar(fill = 2:3), 
+      gp = gpar(fill = c("#8c510a", "#01665e")), 
       height = unit(3, "cm"))
   ), 
   width = unit(1, "cm")
-  )
+)
 
 # 按列添加多个热图
 ht_list <- main + lnc + mi
@@ -50,8 +50,8 @@ split <- sample(letters[1:2], 50, replace = TRUE)
 draw(ht_list, 
      row_split = split, 
      ht_gap = unit(5, "mm")
-     )
-     
+)
+
 ########## 缩放注释示例 ##########
 
 # 生成表达谱
@@ -60,7 +60,7 @@ exp <- matrix(rnorm(100*10), nrow = 100)
 group <- sample(letters[1:3], 100, 
                 replace = TRUE, 
                 prob = c(1, 5, 10)
-                )
+)
 
 panel_fun <- function(index, nm) {
   # 添加绘图 viewport
@@ -71,9 +71,9 @@ panel_fun <- function(index, nm) {
   # 添加箱线图
   grid.boxplot(
     exp[index, ], pos = 1, 
-    gp = gpar(fill = index + 6),
+    gp = gpar(fill = "#b3de69"),
     direction = "horizontal"
-    )
+  )
   popViewport()
 }
 
@@ -92,4 +92,4 @@ Heatmap(
       gap = unit(1, "cm"),
       width = unit(4, "cm")
     ))
-  )
+)
