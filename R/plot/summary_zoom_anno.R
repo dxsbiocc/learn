@@ -49,8 +49,7 @@ split <- sample(letters[1:2], 50, replace = TRUE)
 
 draw(ht_list, 
      row_split = split, 
-     ht_gap = unit(5, "mm"), 
-     heatmap_legend_list = list(lgd_boxplot)
+     ht_gap = unit(5, "mm")
      )
      
 ########## 缩放注释示例 ##########
