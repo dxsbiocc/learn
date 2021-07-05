@@ -21,7 +21,7 @@ getclinical <- function(proj, filename){
         if(!is.null(aux)) 
           clinical <- full_join(clinical, aux, by = "bcr_patient_barcode")
       }
-      write.xlsx(clinical, file = filename, sheetName = proj)
+      write.xlsx(clinical, file = filename, sheetName = proj, append = TRUE)
       # return(clinical)
       return(TRUE)
     }, error = function(e) {
