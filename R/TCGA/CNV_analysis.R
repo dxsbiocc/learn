@@ -77,7 +77,9 @@ suppressWarnings({
   )
 })
 
-# visualizing recurrent CNV
+###############################
+## visualizing recurrent CNV ##
+###############################
 RecCNV <- as_tibble(results) %>%
   mutate_at(vars("q-value"), as.numeric) %>%
   mutate_at(vars(-"q-value"), as.integer) %>% {
