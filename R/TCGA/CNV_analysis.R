@@ -32,7 +32,7 @@ cnvMatrix %<>%
   as.data.frame()
 
 # 获取 common CNV
-file <- "Downloads/CNV.hg19.bypos.111213.txt"
+file <- "~/Downloads/CNV.hg19.bypos.111213.txt"
 commonCNV <- readr::read_tsv(
   file, 
   progress = FALSE
