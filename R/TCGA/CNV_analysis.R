@@ -69,7 +69,7 @@ suppressWarnings({
     # 指定需要分析的变异类型，-1 分析所有的变异
     aberrations = -1,
     # 指定需要分析的染色体，默认为 -1，表示所有染色体
-    chromosomes = 9,
+    chromosomes = -1,
     # 使用近似的方式可以加快计算速度
     approximation = TRUE,
     # 设置迭代次数
