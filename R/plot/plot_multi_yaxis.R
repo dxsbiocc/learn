@@ -18,19 +18,32 @@ hinvert_title_grob <- function(grob){
   grob
 }
 
-add_another_yaxis <- function(g1, g2, offset = 0) {
-  # ============ 1. 主绘图区 ============ #
-  # 获取主绘图区域
-  pos <- c(subset(g1$layout, name == "panel", select = t:r))
-  # 添加图形
-  g <- gtable_add_grob(g1, g2$grobs[[which(g2$layout$name == "panel")]], 
-                       pos$t, pos$l, pos$b * ((offset - 2) * 0.00001 + 1), pos$l)
+add_yaxis_left <- function(g1, g2) {
+  # 将坐标轴添加到左侧
+  # 添加轴
+  pos <- c(subset(g1$layout, name == "ylab-l", select = t:r))
+  index <- which(g2$layout$name == "axis-l")
+  yaxis <- g2$grobs[[index]]
+  g <- gtable_add_cols(g, unit(3, "mm"), pos$l - 1)
+  g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$l - 1)
+  g <- gtable_add_grob(g, yaxis, pos$t, pos$l, pos$b, pos$l, clip = "off", name = "axis-l")
+  # 添加轴标签
+  # pos <- c(subset(g1$layout, name == "ylab-l", select = t:r))
+  index <- which(g2$layout$name == "ylab-l")
+  ylab <- g2$grobs[[index]]
+  g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$l - 1)
+  g <- gtable_add_grob(g, ylab, pos$t, pos$l, pos$b, pos$l, clip = "off", name = "ylab-l")
+  g
+}
+
+add_yaxis_right <- function(g1, g2, pos) {
+  # 将坐标轴添加到右侧
   # ============ 2. 轴标签 ============ #
   index <- which(g2$layout$name == "ylab-l")
   ylab <- g2$grobs[[index]]
   ylab <- hinvert_title_grob(ylab)
   # 添加轴标签
-  g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$r)
+  g <- gtable_add_cols(g1, g2$widths[g2$layout[index, ]$l], pos$r)
   g <- gtable_add_grob(g, ylab, pos$t, pos$r + 1, pos$b, pos$r + 1, clip = "off", name = "ylab-r")
   # ============ 3. 轴设置 ============ #
   index <- which(g2$layout$name == "axis-l")
@@ -52,18 +65,34 @@ add_another_yaxis <- function(g1, g2, offset = 0) {
   g
 }
 
+add_yaxis <- function(g1, g2, offset = 0) {
+  # ============ 1. 主绘图区 ============ #
+  # 获取主绘图区域
+  pos <- c(subset(g1$layout, name == "panel", select = t:r))
+  # 添加图形
+  g <- gtable_add_grob(g1, g2$grobs[[which(g2$layout$name == "panel")]], 
+                       pos$t, pos$l, pos$b * ((offset - 2) * 0.00001 + 1), pos$l)
+  if (offset > 3 && offset %% 2 == 0) {
+    g <- add_yaxis_left(g, g2)
+  } else {
+    g <- add_yaxis_right(g, g2, pos)
+  }
+  g
+}
+
 # 接受可变参数，可添加多个 Y 轴
 plot_multi_yaxis <- function(..., right_label_reverse = TRUE) {
   args <- list(...)
   len <- length(args)
   g <- ggplotGrob(args[[1]])
   for (i in len:2) {
-    if (right_label_reverse) {
+    if (i < 4 || i %% 2 && right_label_reverse) {
       # 为轴标签添加旋转
       args[[i]] <- args[[i]] + theme(axis.title.y = element_text(angle = 270))
     }
+    # 获取 gtable 对象
     g2 <- ggplotGrob(args[[i]])
-    g <- add_another_yaxis(g, g2, offset = i)
+    g <- add_yaxis(g, g2, offset = i)
   }
   # 绘制图形
   grid.newpage()
@@ -101,7 +130,7 @@ p2 <- ggplot(data, aes(category, Precipitation)) +
         panel.background = element_rect(fill = NA), 
         axis.text.y = element_text(color = colors[2]), 
         axis.ticks.y = element_line(color = colors[2]), 
-        axis.title.y = element_text(color = colors[2], angle = 270), 
+        axis.title.y = element_text(color = colors[2]), 
         axis.line.y = element_line(color = colors[2]), 
         axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
   )
@@ -115,7 +144,7 @@ p3 <- ggplot(data, aes(category, Temperature, group = 1)) +
         panel.background = element_rect(fill = NA), 
         axis.text.y = element_text(color = colors[3]), 
         axis.ticks.y = element_line(color = colors[3]), 
-        axis.title.y = element_text(color = colors[3], angle = 270), 
+        axis.title.y = element_text(color = colors[3]), 
         axis.line.y = element_line(color = colors[3]), 
         axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)
   )
