@@ -20,15 +20,16 @@ hinvert_title_grob <- function(grob){
 
 add_yaxis_left <- function(g1, g2) {
   # 将坐标轴添加到左侧
-  # 添加轴
+  # 添加坐标轴
   pos <- c(subset(g1$layout, name == "ylab-l", select = t:r))
   index <- which(g2$layout$name == "axis-l")
   yaxis <- g2$grobs[[index]]
+  # 先添加 3mm 间距
   g <- gtable_add_cols(g, unit(3, "mm"), pos$l - 1)
+  # 再添加轴
   g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$l - 1)
   g <- gtable_add_grob(g, yaxis, pos$t, pos$l, pos$b, pos$l, clip = "off", name = "axis-l")
   # 添加轴标签
-  # pos <- c(subset(g1$layout, name == "ylab-l", select = t:r))
   index <- which(g2$layout$name == "ylab-l")
   ylab <- g2$grobs[[index]]
   g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$l - 1)
