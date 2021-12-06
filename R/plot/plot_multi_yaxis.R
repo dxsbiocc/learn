@@ -25,7 +25,7 @@ add_yaxis_left <- function(g1, g2) {
   index <- which(g2$layout$name == "axis-l")
   yaxis <- g2$grobs[[index]]
   # 先添加 3mm 间距
-  g <- gtable_add_cols(g, unit(3, "mm"), pos$l - 1)
+  g <- gtable_add_cols(g1, unit(3, "mm"), pos$l - 1)
   # 再添加轴
   g <- gtable_add_cols(g, g2$widths[g2$layout[index, ]$l], pos$l - 1)
   g <- gtable_add_grob(g, yaxis, pos$t, pos$l, pos$b, pos$l, clip = "off", name = "axis-l")
@@ -84,13 +84,17 @@ add_yaxis <- function(g1, g2, offset = 0) {
 # 接受可变参数，可添加多个 Y 轴
 plot_multi_yaxis <- function(..., right_label_reverse = TRUE) {
   args <- list(...)
+  my_theme <- theme(panel.grid = element_blank(), panel.background = element_rect(fill = NA))
   len <- length(args)
+  args[[1]] <- args[[1]] + my_theme
   g <- ggplotGrob(args[[1]])
-  for (i in len:2) {
+  for (i in len:2) { 
     if (i < 4 || i %% 2 && right_label_reverse) {
       # 为轴标签添加旋转
-      args[[i]] <- args[[i]] + theme(axis.title.y = element_text(angle = 270))
+      args[[i]] <- args[[i]] + 
+        theme(axis.title.y = element_text(angle = 270))
     }
+    args[[i]] <- args[[i]] + my_theme
     # 获取 gtable 对象
     g2 <- ggplotGrob(args[[i]])
     g <- add_yaxis(g, g2, offset = i)
