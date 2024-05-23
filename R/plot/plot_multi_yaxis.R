@@ -59,7 +59,6 @@ add_yaxis_right <- function(g1, g2, pos) {
     ticks <- yaxis$children[[2]]
     # 调整刻度线位置
     for (i in seq_along(ticks$grobs)) {
-        print(ticks$grobs)
         # 刻度标签
         if (inherits(ticks$grobs[[i]], "titleGrob")) {
             ticks$grobs[[i]] <- hinvert_title_grob(ticks$grobs[[i]])
